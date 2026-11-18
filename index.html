@@ -1,1025 +1,299 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сергей Афонин — AI Visual Creator | Премиальный нейровизуал для бизнеса</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0a0a0a;
-            color: #fff;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10,10,10,0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255,107,53,0.2);
-        }
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .logo-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 18px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .logo-text h1 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-        }
-        .logo-text p {
-            font-size: 11px;
-            color: #ff6b35;
-            letter-spacing: 1px;
-        }
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-        nav a:hover { color: #ff6b35; }
-        .btn-order {
-            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
-            color: #fff;
-            padding: 12px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s;
-        }
-        .btn-order:hover { transform: translateY(-2px); }
-        
-        /* Hero */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 120px 20px 80px;
-            background: radial-gradient(ellipse at center, rgba(255,107,53,0.1) 0%, transparent 70%);
-        }
-        .hero-content { max-width: 900px; }
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255,107,53,0.1);
-            border: 1px solid rgba(255,107,53,0.3);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-        .hero h2 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 56px;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 25px;
-        }
-        .hero h2 span { color: #ff6b35; }
-        .hero p {
-            font-size: 18px;
-            color: #a0a0a0;
-            margin-bottom: 40px;
-        }
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
-            color: #fff;
-            padding: 16px 35px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            transition: transform 0.3s;
-        }
-        .btn-primary:hover { transform: translateY(-3px); }
-        .btn-secondary {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: #fff;
-            padding: 16px 35px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        .btn-secondary:hover {
-            background: rgba(255,107,53,0.1);
-            border-color: #ff6b35;
-        }
-        
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-top: 60px;
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-number {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 42px;
-            font-weight: 800;
-            color: #ff6b35;
-        }
-        .stat-label {
-            font-size: 14px;
-            color: #a0a0a0;
-        }
-        
-        /* Sections */
-        section {
-            padding: 100px 0;
-        }
-        .section-title {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 42px;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .section-subtitle {
-            text-align: center;
-            color: #a0a0a0;
-            font-size: 18px;
-            margin-bottom: 60px;
-        }
-        
-        /* Benefits */
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-        .benefit-column h3 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-        .benefit-item {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-            padding: 20px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 10px;
-        }
-        .benefit-icon {
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-        .benefit-item h4 {
-            font-size: 18px;
-            margin-bottom: 8px;
-        }
-        .benefit-item p {
-            color: #a0a0a0;
-            font-size: 14px;
-        }
-        
-        /* Services */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        .service-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 40px 30px;
-            transition: all 0.3s;
-        }
-        .service-card:hover {
-            border-color: #ff6b35;
-            transform: translateY(-5px);
-        }
-        .service-badge {
-            display: inline-block;
-            background: rgba(255,107,53,0.1);
-            color: #ff6b35;
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-        .service-card h3 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        .service-price {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 36px;
-            font-weight: 800;
-            color: #ff6b35;
-            margin-bottom: 20px;
-        }
-        .service-card p {
-            color: #a0a0a0;
-            margin-bottom: 25px;
-        }
-        .service-features {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-        .service-features li {
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .service-features li:before {
-            content: "✓ ";
-            color: #ff6b35;
-            font-weight: bold;
-        }
-        
-        /* Portfolio */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-        }
-        .portfolio-item {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            aspect-ratio: 16/9;
-            cursor: pointer;
-        }
-        .portfolio-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-        .portfolio-item:hover img { transform: scale(1.1); }
-        .portfolio-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            padding: 30px;
-        }
-        .portfolio-tag {
-            display: inline-block;
-            background: #ff6b35;
-            color: #fff;
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 12px;
-            margin-bottom: 10px;
-        }
-        .portfolio-overlay h3 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 20px;
-            margin-bottom: 8px;
-        }
-        .portfolio-overlay p {
-            font-size: 14px;
-            color: #ccc;
-        }
-        
-        /* Audience */
-        .audience-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        .audience-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        .audience-card:hover {
-            border-color: #ff6b35;
-        }
-        .audience-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-        .audience-card h3 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        .audience-card p {
-            color: #a0a0a0;
-            font-size: 14px;
-        }
-        
-        /* Process */
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        .step {
-            text-align: center;
-            padding: 30px;
-        }
-        .step-number {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 48px;
-            font-weight: 800;
-            color: #ff6b35;
-            margin-bottom: 20px;
-        }
-        .step h3 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        .step p {
-            color: #a0a0a0;
-            font-size: 14px;
-        }
-        
-        /* About */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 60px;
-            align-items: center;
-        }
-        .about-image {
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        .about-image img {
-            width: 100%;
-            height: auto;
-        }
-        .about-text h3 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-        .about-text p {
-            color: #a0a0a0;
-            margin-bottom: 30px;
-        }
-        .about-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        .about-feature {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .about-feature:before {
-            content: "✓";
-            color: #ff6b35;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        
-        /* Contact Form */
-        .contact-form {
-            max-width: 700px;
-            margin: 0 auto;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,107,53,0.3);
-            border-radius: 20px;
-            padding: 50px;
-        }
-        .form-group {
-            margin-bottom: 25px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-        }
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-        .btn-submit {
-            width: 100%;
-            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
-            color: #fff;
-            padding: 18px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        .btn-submit:hover { transform: translateY(-2px); }
-        
-        /* Footer */
-        footer {
-            background: rgba(0,0,0,0.5);
-            padding: 60px 0 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        .footer-content {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 60px;
-            margin-bottom: 40px;
-        }
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .footer-logo h3 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 20px;
-        }
-        .footer-logo p {
-            color: #ff6b35;
-            font-size: 12px;
-        }
-        .footer-contacts {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .footer-contacts a {
-            color: #a0a0a0;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .footer-contacts a:hover { color: #ff6b35; }
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .footer-links a {
-            background: rgba(255,255,255,0.05);
-            padding: 10px 20px;
-            border-radius: 8px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        .footer-links a:hover {
-            background: rgba(255,107,53,0.2);
-        }
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #a0a0a0;
-            font-size: 14px;
-        }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal.active { display: flex; }
-        .modal-content {
-            background: #1a1a1a;
-            border-radius: 20px;
-            max-width: 800px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #fff;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-        }
-        .modal-video {
-            width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 20px 20px 0 0;
-        }
-        .modal-info {
-            padding: 30px;
-        }
-        .modal-info h3 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-        .modal-info p {
-            color: #a0a0a0;
-            margin-bottom: 25px;
-        }
-        
-        @media (max-width: 768px) {
-            .hero h2 { font-size: 36px; }
-            .section-title { font-size: 32px; }
-            nav ul { display: none; }
-            .about-content { grid-template-columns: 1fr; }
-            .footer-content { grid-template-columns: 1fr; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сергей Афонин — AI Visual Creator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0a0a0a;color:#fff;line-height:1.6;overflow-x:hidden}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+header{position:fixed;top:0;width:100%;background:rgba(10,10,10,0.95);backdrop-filter:blur(10px);z-index:1000;padding:15px 0;border-bottom:1px solid rgba(255,107,53,0.2)}
+.header-content{display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:15px}
+.logo-icon{width:45px;height:45px;background:linear-gradient(135deg,#ff6b35,#ff8c5a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;font-family:'Plus Jakarta Sans',sans-serif;color:#fff}
+.logo-text h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700}
+.logo-text p{font-size:11px;color:#ff6b35;letter-spacing:1px}
+nav ul{display:flex;list-style:none;gap:30px}
+nav a{color:#fff;text-decoration:none;font-size:14px;transition:color 0.3s}
+nav a:hover{color:#ff6b35}
+.btn-order{background:linear-gradient(135deg,#ff6b35,#ff8c5a);color:#fff;padding:12px 25px;border-radius:8px;text-decoration:none;font-weight:600;transition:transform 0.3s}
+.btn-order:hover{transform:translateY(-2px)}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;background:radial-gradient(ellipse at center,rgba(255,107,53,0.1) 0%,transparent 70%)}
+.hero-content{max-width:900px}
+.hero-badge{display:inline-block;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.3);padding:8px 20px;border-radius:50px;font-size:14px;margin-bottom:30px}
+.hero h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:56px;font-weight:800;line-height:1.1;margin-bottom:25px}
+.hero h2 span{color:#ff6b35}
+.hero p{font-size:18px;color:#a0a0a0;margin-bottom:40px}
+.hero-buttons{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:linear-gradient(135deg,#ff6b35,#ff8c5a);color:#fff;padding:16px 35px;border-radius:10px;text-decoration:none;font-weight:600;font-size:16px;transition:transform 0.3s;display:inline-block}
+.btn-primary:hover{transform:translateY(-3px)}
+.btn-secondary{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:16px 35px;border-radius:10px;text-decoration:none;font-weight:600;font-size:16px;transition:all 0.3s;display:inline-block}
+.btn-secondary:hover{background:rgba(255,107,53,0.1);border-color:#ff6b35}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;margin-top:60px}
+.stat-item{text-align:center}
+.stat-number{font-family:'Plus Jakarta Sans',sans-serif;font-size:42px;font-weight:800;color:#ff6b35}
+.stat-label{font-size:14px;color:#a0a0a0}
+section{padding:100px 0}
+.section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:42px;font-weight:800;text-align:center;margin-bottom:20px}
+.section-subtitle{text-align:center;color:#a0a0a0;font-size:18px;margin-bottom:60px}
+.benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}
+.benefit-column h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;margin-bottom:30px}
+.benefit-item{display:flex;gap:15px;margin-bottom:25px;padding:20px;background:rgba(255,255,255,0.03);border-radius:10px}
+.benefit-icon{font-size:24px;flex-shrink:0}
+.benefit-item h4{font-size:18px;margin-bottom:8px}
+.benefit-item p{color:#a0a0a0;font-size:14px}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px}
+.service-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:15px;padding:40px 30px;transition:all 0.3s}
+.service-card:hover{border-color:#ff6b35;transform:translateY(-5px)}
+.service-badge{display:inline-block;background:rgba(255,107,53,0.1);color:#ff6b35;padding:5px 15px;border-radius:50px;font-size:12px;font-weight:600;margin-bottom:15px}
+.service-card h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;margin-bottom:10px}
+.service-card p{color:#a0a0a0;margin-bottom:25px}
+.service-features{list-style:none;margin-bottom:30px}
+.service-features li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.service-features li:before{content:"✓ ";color:#ff6b35;font-weight:bold}
+.portfolio-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:30px}
+.portfolio-item{position:relative;border-radius:15px;overflow:hidden;aspect-ratio:16/9;cursor:pointer;background:#1a1a1a}
+.portfolio-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s}
+.portfolio-item:hover img{transform:scale(1.1)}
+.portfolio-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.9),transparent);padding:30px}
+.portfolio-tag{display:inline-block;background:#ff6b35;color:#fff;padding:5px 15px;border-radius:50px;font-size:12px;margin-bottom:10px}
+.portfolio-overlay h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;margin-bottom:8px}
+.portfolio-overlay p{font-size:14px;color:#ccc}
+.audience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px}
+.audience-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:15px;padding:30px;text-align:center;transition:all 0.3s}
+.audience-card:hover{border-color:#ff6b35}
+.audience-icon{font-size:48px;margin-bottom:20px}
+.audience-card h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;margin-bottom:15px}
+.audience-card p{color:#a0a0a0;font-size:14px}
+.process-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px}
+.step{text-align:center;padding:30px}
+.step-number{font-family:'Plus Jakarta Sans',sans-serif;font-size:48px;font-weight:800;color:#ff6b35;margin-bottom:20px}
+.step h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;margin-bottom:15px}
+.step p{color:#a0a0a0;font-size:14px}
+.about-content{display:grid;grid-template-columns:1fr 2fr;gap:60px;align-items:center}
+.about-image{border-radius:15px;overflow:hidden}
+.about-image img{width:100%;height:auto}
+.about-text h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;margin-bottom:20px}
+.about-text p{color:#a0a0a0;margin-bottom:30px}
+.about-features{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.about-feature{display:flex;align-items:center;gap:10px}
+.about-feature:before{content:"✓";color:#ff6b35;font-weight:bold;font-size:20px}
+.contact-form{max-width:700px;margin:0 auto;background:rgba(255,255,255,0.03);border:1px solid rgba(255,107,53,0.3);border-radius:20px;padding:50px}
+.form-group{margin-bottom:25px}
+.form-group label{display:block;margin-bottom:8px;font-weight:600}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:15px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:'Inter',sans-serif;font-size:14px}
+.form-group textarea{min-height:120px;resize:vertical}
+.btn-submit{width:100%;background:linear-gradient(135deg,#ff6b35,#ff8c5a);color:#fff;padding:18px;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;transition:transform 0.3s}
+.btn-submit:hover{transform:translateY(-2px)}
+footer{background:rgba(0,0,0,0.5);padding:60px 0 30px;border-top:1px solid rgba(255,255,255,0.1)}
+.footer-content{display:grid;grid-template-columns:1fr 2fr;gap:60px;margin-bottom:40px}
+.footer-logo{display:flex;align-items:center;gap:15px;margin-bottom:20px}
+.footer-logo h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px}
+.footer-logo p{color:#ff6b35;font-size:12px}
+.footer-contacts{display:flex;flex-direction:column;gap:15px}
+.footer-contacts a{color:#a0a0a0;text-decoration:none;transition:color 0.3s}
+.footer-contacts a:hover{color:#ff6b35}
+.footer-links{display:flex;gap:20px;margin-top:20px}
+.footer-links a{background:rgba(255,255,255,0.05);padding:10px 20px;border-radius:8px;color:#fff;text-decoration:none;font-size:14px;transition:all 0.3s}
+.footer-links a:hover{background:rgba(255,107,53,0.2)}
+.footer-bottom{text-align:center;padding-top:30px;border-top:1px solid rgba(255,255,255,0.1);color:#a0a0a0;font-size:14px}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2000;align-items:center;justify-content:center;padding:20px}
+.modal.active{display:flex}
+.modal-content{background:#1a1a1a;border-radius:20px;max-width:800px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+.modal-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.1);border:none;color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:20px;z-index:10}
+.modal-video{width:100%;aspect-ratio:16/9;border-radius:20px 20px 0 0}
+.modal-info{padding:30px}
+.modal-info h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;margin-bottom:15px}
+.modal-info p{color:#a0a0a0;margin-bottom:25px}
+@media(max-width:768px){.hero h2{font-size:36px}.section-title{font-size:32px}nav ul{display:none}.about-content{grid-template-columns:1fr}.footer-content{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <div class="logo-icon">SA</div>
-                <div class="logo-text">
-                    <h1>Сергей Афонин</h1>
-                    <p>AI VISUAL CREATOR</p>
-                </div>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#benefits">Выгода</a></li>
-                    <li><a href="#services">Услуги</a></li>
-                    <li><a href="#portfolio">Портфолио</a></li>
-                    <li><a href="#audience">Для кого</a></li>
-                    <li><a href="#process">Как работаем</a></li>
-                    <li><a href="#about">Обо мне</a></li>
-                </ul>
-            </nav>
-            <a href="#contact" class="btn-order">Заказать</a>
-        </div>
-    </header>
+<header>
+<div class="container header-content">
+<div class="logo"><div class="logo-icon">SA</div><div class="logo-text"><h1>Сергей Афонин</h1><p>AI VISUAL CREATOR</p></div></div>
+<nav><ul><li><a href="#benefits">Выгода</a></li><li><a href="#services">Услуги</a></li><li><a href="#portfolio">Портфолио</a></li><li><a href="#audience">Для кого</a></li><li><a href="#process">Как работаем</a></li><li><a href="#about">Обо мне</a></li></ul></nav>
+<a href="#contact" class="btn-order">Заказать</a>
+</div>
+</header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">● Премиальный нейровизуал для вашего бизнеса</div>
-            <h2>Оживлю ваше фото — <span>один кадр вместо съёмочного дня</span></h2>
-            <p>12 лет в фотографии. От плёнки до нейросетей. Создаю кинематографичные нейровидео для бизнеса без съёмочной группы, локаций и дорогостоящей техники.</p>
-            <div class="hero-buttons">
-                <a href="#contact" class="btn-primary">Заказать видео →</a>
-                <a href="#portfolio" class="btn-secondary">▶ Смотреть работы</a>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-number">12 лет</div>
-                    <div class="stat-label">Опыта в фотографии</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">2-3 дня</div>
-                    <div class="stat-label">Готовый результат</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">в 5 раз</div>
-                    <div class="stat-label">Выгоднее съёмок</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">4K UHD</div>
-                    <div class="stat-label">Премиум деталь</div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="hero">
+<div class="hero-content">
+<div class="hero-badge">● Премиальный нейровизуал для вашего бизнеса</div>
+<h2>Оживлю ваше фото — <span>один кадр вместо съёмочного дня</span></h2>
+<p>12 лет в фотографии. От плёнки до нейросетей. Создаю кинематографичные нейровидео для бизнеса без съёмочной группы, локаций и дорогостоящей техники.</p>
+<div class="hero-buttons"><a href="#contact" class="btn-primary">Заказать видео →</a><a href="#portfolio" class="btn-secondary">▶ Смотреть работы</a></div>
+<div class="stats">
+<div class="stat-item"><div class="stat-number">12 лет</div><div class="stat-label">Опыта в фотографии</div></div>
+<div class="stat-item"><div class="stat-number">2-3 дня</div><div class="stat-label">Готовый результат</div></div>
+<div class="stat-item"><div class="stat-number">в 5 раз</div><div class="stat-label">Выгоднее съёмок</div></div>
+<div class="stat-item"><div class="stat-number">4K UHD</div><div class="stat-label">Премиум деталь</div></div>
+</div>
+</div>
+</section>
 
-    <section id="benefits">
-        <div class="container">
-            <h2 class="section-title">Почему это выгодно</h2>
-            <p class="section-subtitle">Сравните классический подход к созданию контента и возможности современных нейросетей</p>
-            <div class="benefits-grid">
-                <div class="benefit-column">
-                    <h3>Традиционный подход</h3>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">✕</div>
-                        <div>
-                            <h4>Дорого</h4>
-                            <p>Оператор, свет, модель, аренда студии, визажист — от 50 000 ₽ за ролик.</p>
-                        </div>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">✕</div>
-                        <div>
-                            <h4>Долго</h4>
-                            <p>Недели согласований локаций, графика команды и длительный монтаж.</p>
-                        </div>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">✕</div>
-                        <div>
-                            <h4>Сложно</h4>
-                            <p>Необходимость личного присутствия и зависимость от погоды и техники.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="benefit-column">
-                    <h3>Современное решение</h3>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">✓</div>
-                        <div>
-                            <h4>Фиксированная цена</h4>
-                            <p>Прозрачный бюджет без скрытых трат на съёмочную группу и аренду.</p>
-                        </div>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">✓</div>
-                        <div>
-                            <h4>Готово за 2-3 дня</h4>
-                            <p>Быстрый запуск рекламных кампаний и контента для социальных сетей.</p>
-                        </div>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">✓</div>
-                        <div>
-                            <h4>Вау-эффект без съёмок</h4>
-                            <p>Кинематографичное качество, любая локация и сценарий всего по 1-3 фото.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="benefits"><div class="container">
+<h2 class="section-title">Почему это выгодно</h2>
+<p class="section-subtitle">Сравните классический подход к созданию контента и возможности современных нейросетей</p>
+<div class="benefits-grid">
+<div class="benefit-column"><h3>Традиционный подход</h3>
+<div class="benefit-item"><div class="benefit-icon">✕</div><div><h4>Дорого</h4><p>Оператор, свет, модель, аренда студии, визажист — от 50 000 ₽ за ролик.</p></div></div>
+<div class="benefit-item"><div class="benefit-icon">✕</div><div><h4>Долго</h4><p>Недели согласований локаций, графика команды и длительный монтаж.</p></div></div>
+<div class="benefit-item"><div class="benefit-icon">✕</div><div><h4>Сложно</h4><p>Необходимость личного присутствия и зависимость от погоды и техники.</p></div></div>
+</div>
+<div class="benefit-column"><h3>Современное решение</h3>
+<div class="benefit-item"><div class="benefit-icon">✓</div><div><h4>Фиксированная цена</h4><p>Прозрачный бюджет без скрытых трат на съёмочную группу и аренду.</p></div></div>
+<div class="benefit-item"><div class="benefit-icon">✓</div><div><h4>Готово за 2-3 дня</h4><p>Быстрый запуск рекламных кампаний и контента для социальных сетей.</p></div></div>
+<div class="benefit-item"><div class="benefit-icon">✓</div><div><h4>Вау-эффект без съёмок</h4><p>Кинематографичное качество, любая локация и сценарий всего по 1-3 фото.</p></div></div>
+</div>
+</div>
+</div></section>
 
-    <section id="services">
-        <div class="container">
-            <h2 class="section-title">Услуги и стоимость</h2>
-            <p class="section-subtitle">Выберите подходящий формат для реализации ваших маркетинговых задач</p>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-badge">ЭКОНОМ • БЫСТРЫЙ СТАРТ</div>
-                    <h3>7 000 ₽</h3>
-                    <p>Отличный выбор для тестирования ИИ-креатива в рекламной кампании.</p>
-                    <ul class="service-features">
-                        <li>1 премиальное нейровидео (10-15 сек)</li>
-                        <li>Написание сценария</li>
-                        <li>Full HD (1080p) разрешение</li>
-                        <li>Срок выполнения: 3 дня</li>
-                    </ul>
-                    <a href="#contact" class="btn-primary" style="display:block; text-align:center;">Выбрать Эконом</a>
-                </div>
-                <div class="service-card">
-                    <div class="service-badge">ПОПУЛЯРНЫЙ ВЫБОР</div>
-                    <h3>15 000 ₽</h3>
-                    <p>Идеально для полноценного запуска Reels / Shorts и рекламных роликов.</p>
-                    <ul class="service-features">
-                        <li>3 нейровидео или 5 фотокомпозиций</li>
-                        <li>Глубокая проработка сценария</li>
-                        <li>4K UHD максимальное разрешение</li>
-                        <li>2 правки бесплатно</li>
-                        <li>Срок выполнения: 2-3 дня</li>
-                    </ul>
-                    <a href="#contact" class="btn-primary" style="display:block; text-align:center;">Выбрать Стандарт</a>
-                </div>
-                <div class="service-card">
-                    <div class="service-badge">БИЗНЕС • МАСШТАБ</div>
-                    <h3>32 000 ₽</h3>
-                    <p>Комплексный контент-пакет на месяц для соцсетей и маркетплейсов.</p>
-                    <ul class="service-features">
-                        <li>8 нейровидео + 10 премиум-фото</li>
-                        <li>Индивидуальный брендинг и стиль</li>
-                        <li>4K UHD + цветокоррекция</li>
-                        <li>Приоритетная поддержка 24/7</li>
-                        <li>Срок выполнения: от 4 дней</li>
-                    </ul>
-                    <a href="#contact" class="btn-primary" style="display:block; text-align:center;">Выбрать Бизнес</a>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="services"><div class="container">
+<h2 class="section-title">Услуги и стоимость</h2>
+<p class="section-subtitle">Выберите подходящий формат для реализации ваших маркетинговых задач</p>
+<div class="services-grid">
+<div class="service-card"><div class="service-badge">ЭКОНОМ • БЫСТРЫЙ СТАРТ</div><h3>7 000 ₽</h3><p>Отличный выбор для тестирования ИИ-креатива в рекламной кампании.</p>
+<ul class="service-features"><li>1 премиальное нейровидео (10-15 сек)</li><li>Написание сценария</li><li>Full HD (1080p) разрешение</li><li>Срок выполнения: 3 дня</li></ul>
+<a href="#contact" class="btn-primary" style="display:block;text-align:center;">Выбрать Эконом</a></div>
+<div class="service-card"><div class="service-badge">ПОПУЛЯРНЫЙ ВЫБОР</div><h3>15 000 ₽</h3><p>Идеально для полноценного запуска Reels / Shorts и рекламных роликов.</p>
+<ul class="service-features"><li>3 нейровидео или 5 фотокомпозиций</li><li>Глубокая проработка сценария</li><li>4K UHD максимальное разрешение</li><li>2 правки бесплатно</li><li>Срок выполнения: 2-3 дня</li></ul>
+<a href="#contact" class="btn-primary" style="display:block;text-align:center;">Выбрать Стандарт</a></div>
+<div class="service-card"><div class="service-badge">БИЗНЕС • МАСШТАБ</div><h3>32 000 ₽</h3><p>Комплексный контент-пакет на месяц для соцсетей и маркетплейсов.</p>
+<ul class="service-features"><li>8 нейровидео + 10 премиум-фото</li><li>Индивидуальный брендинг и стиль</li><li>4K UHD + цветокоррекция</li><li>Приоритетная поддержка 24/7</li><li>Срок выполнения: от 4 дней</li></ul>
+<a href="#contact" class="btn-primary" style="display:block;text-align:center;">Выбрать Бизнес</a></div>
+</div>
+</div></section>
 
-    <section id="portfolio">
-        <div class="container">
-            <h2 class="section-title">Портфолио работ</h2>
-            <p class="section-subtitle">Реальные примеры созданных мной нейровидео и гиперреалистичных фотокомпозиций</p>
-            <div class="portfolio-grid">
-                <div class="portfolio-item" onclick="openModal('https://i.postimg.cc/D0xTR0zG/f3d00386-a725-410e-84c1-fb6578ec4261.jpg', 'Динамичный креатив для спортивных брендов', 'Кинематографичная сцена скачек — для рекламы ипподромов, спортивных брендов, event-агентств')">
-                    <img src="https://i.postimg.cc/D0xTR0zG/f3d00386-a725-410e-84c1-fb6578ec4261.jpg" alt="Скачки">
-                    <div class="portfolio-overlay">
-                        <div class="portfolio-tag">Нейрофото</div>
-                        <h3>Динамичный креатив для спортивных брендов</h3>
-                        <p>Кинематографичная сцена скачек — для рекламы ипподромов, спортивных брендов, event-агентств</p>
-                    </div>
-                </div>
-                <div class="portfolio-item" onclick="openModal('https://i.postimg.cc/cHNKDgp6/a-male-photoshoot-featuring-a-man-in-an-adidas-tracksuit-sitting-gracefully-atop-a-hill-during-the-e.png', 'Кинематографичный постер для музыкального артиста', 'Эпичная сцена с гиперреалистичной луной — для обложек альбомов, афиш концертов, промо-кампаний')">
-                    <img src="https://i.postimg.cc/cHNKDgp6/a-male-photoshoot-featuring-a-man-in-an-adidas-tracksuit-sitting-gracefully-atop-a-hill-during-the-e.png" alt="Луна">
-                    <div class="portfolio-overlay">
-                        <div class="portfolio-tag">Нейрофото</div>
-                        <h3>Кинематографичный постер для музыкального артиста</h3>
-                        <p>Эпичная сцена с гиперреалистичной луной — для обложек альбомов, афиш концертов, промо-кампаний</p>
-                    </div>
-                </div>
-                <div class="portfolio-item" onclick="openModal('https://i.postimg.cc/pTZdq0Yx/toma-sergej-kopia.jpg', 'Премиум-реклама для luxury-бренда', 'Атмосфера богатства и статуса — для ювелирных домов, свадебных агентств, элитных туров')">
-                    <img src="https://i.postimg.cc/pTZdq0Yx/toma-sergej-kopia.jpg" alt="Яхта">
-                    <div class="portfolio-overlay">
-                        <div class="portfolio-tag">Нейрофото</div>
-                        <h3>Премиум-реклама для luxury-бренда</h3>
-                        <p>Атмосфера богатства и статуса — для ювелирных домов, свадебных агентств, элитных туров</p>
-                    </div>
-                </div>
-                <div class="portfolio-item" onclick="openModal('https://i.postimg.cc/fWqzyS8V/1781023906197-3veheckky4-kopia.png', 'Деловой портрет для эксперта или юриста', 'Статусный визуал без фотостудии — для личных сайтов, LinkedIn, бизнес-презентаций')">
-                    <img src="https://i.postimg.cc/fWqzyS8V/1781023906197-3veheckky4-kopia.png" alt="Костюм">
-                    <div class="portfolio-overlay">
-                        <div class="portfolio-tag">Нейрофото</div>
-                        <h3>Деловой портрет для эксперта или юриста</h3>
-                        <p>Статусный визуал без фотостудии — для личных сайтов, LinkedIn, бизнес-презентаций</p>
-                    </div>
-                </div>
-                <div class="portfolio-item" onclick="openModal('https://i.postimg.cc/NFKwmbd9/IMG-20260520-192031.webp', 'Имиджевый креатив для мотосалона', 'Брутальная эстетика для рекламы мотоциклов, автосервисов, мужских брендов')">
-                    <img src="https://i.postimg.cc/NFKwmbd9/IMG-20260520-192031.webp" alt="Мотоцикл">
-                    <div class="portfolio-overlay">
-                        <div class="portfolio-tag">Нейрофото</div>
-                        <h3>Имиджевый креатив для мотосалона</h3>
-                        <p>Брутальная эстетика для рекламы мотоциклов, автосервисов, мужских брендов</p>
-                    </div>
-                </div>
-                <div class="portfolio-item" onclick="openModal('https://www.youtube.com/embed/o5ISOQ1t81Q?autoplay=1&rel=0', 'Reels для туристической базы отдыха', 'Оживление фото: вода, брызги, движение — готовый вертикальный ролик для соцсетей', true)">
-                    <img src="https://i.postimg.cc/FRV0QVms/Skrinsot-20261112-231137.jpg" alt="Рыбалка">
-                    <div class="portfolio-overlay">
-                        <div class="portfolio-tag">Нейровидео / Reels</div>
-                        <h3>Reels для туристической базы отдыха</h3>
-                        <p>Оживление фото: вода, брызги, движение — готовый вертикальный ролик для соцсетей</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="portfolio"><div class="container">
+<h2 class="section-title">Портфолио работ</h2>
+<p class="section-subtitle">Реальные примеры созданных мной нейровидео и гиперреалистичных фотокомпозиций</p>
+<div class="portfolio-grid">
 
-    <section id="audience">
-        <div class="container">
-            <h2 class="section-title">Для кого мои услуги</h2>
-            <p class="section-subtitle">Создаю визуал, который решает задачи бизнеса в любой нише</p>
-            <div class="audience-grid">
-                <div class="audience-card">
-                    <div class="audience-icon">🏪</div>
-                    <h3>Малый бизнес</h3>
-                    <p>Яркие креативы для товаров на маркетплейсах и интернет-магазинов без затрат на студию.</p>
-                </div>
-                <div class="audience-card">
-                    <div class="audience-icon">🎯</div>
-                    <h3>Эксперты</h3>
-                    <p>Статусный личный бренд, кинематографичные Reels и сторис для привлечения клиентов.</p>
-                </div>
-                <div class="audience-card">
-                    <div class="audience-icon">✨</div>
-                    <h3>Салоны красоты</h3>
-                    <p>Премиальные визуальные образы и эстетика для привлечения аудитории в соцсетях.</p>
-                </div>
-                <div class="audience-card">
-                    <div class="audience-icon">🏍️</div>
-                    <h3>Автосервисы</h3>
-                    <p>Брутальные имиджевые ролики и динамичные кадры для рекламы услуг и тюнинга.</p>
-                </div>
-                <div class="audience-card">
-                    <div class="audience-icon">🏡</div>
-                    <h3>Недвижимость</h3>
-                    <p>Атмосферные презентации объектов, интерьеров и туристических баз отдыха.</p>
-                </div>
-                <div class="audience-card">
-                    <div class="audience-icon">⚖️</div>
-                    <h3>Юристы</h3>
-                    <p>Строгий деловой портрет и экспертный имидж без долгих фотосессий в студии.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="portfolio-item" onclick="openModal('1.jpg','Динамичный креатив для спортивных брендов','Кинематографичная сцена скачек — для рекламы ипподромов, спортивных брендов, event-агентств')">
+<img src="1.jpg" alt="Скачки">
+<div class="portfolio-overlay"><div class="portfolio-tag">Нейрофото</div><h3>Динамичный креатив для спортивных брендов</h3><p>Кинематографичная сцена скачек — для рекламы ипподромов, спортивных брендов, event-агентств</p></div>
+</div>
 
-    <section id="process">
-        <div class="container">
-            <h2 class="section-title">Как работаем</h2>
-            <p class="section-subtitle">Простой и прозрачный процесс создания вашего контента за 4 шага</p>
-            <div class="process-steps">
-                <div class="step">
-                    <div class="step-number">01</div>
-                    <h3>Обсуждение задачи</h3>
-                    <p>Вы оставляете заявку, мы обсуждаем вашу цель, референсы и желаемый результат.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">02</div>
-                    <h3>Исходные материалы</h3>
-                    <p>Вы присылаете 1-3 фотографии продукта, модели или интерьера (или выбираем стоковые).</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">03</div>
-                    <h3>Создание ролика</h3>
-                    <p>Я генерирую и монтирую кинематографичное нейровидео или фотокомпозицию.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">04</div>
-                    <h3>Сдача и правки</h3>
-                    <p>Утверждаете готовый результат в высоком разрешении 4K UHD. Вносим правки при необходимости.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="portfolio-item" onclick="openModal('2.png','Кинематографичный постер для музыкального артиста','Эпичная сцена с гиперреалистичной луной — для обложек альбомов, афиш концертов, промо-кампаний')">
+<img src="2.png" alt="Луна">
+<div class="portfolio-overlay"><div class="portfolio-tag">Нейрофото</div><h3>Кинематографичный постер для музыкального артиста</h3><p>Эпичная сцена с гиперреалистичной луной — для обложек альбомов, афиш концертов, промо-кампаний</p></div>
+</div>
 
-    <section id="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-image">
-                    <img src="https://i.postimg.cc/3NrGnQg5/lv-kopia.jpg" alt="Сергей Афонин">
-                </div>
-                <div class="about-text">
-                    <div class="service-badge">ОБО МНЕ</div>
-                    <h3>Сергей Афонин — специалист по премиальному нейровизуалу</h3>
-                    <p>Сергей Афонин — специалист по премиальному нейровизуалу. 12 лет в профессиональной фотографии. Работаю по договору (самозанятый). Отвечаю в течение часа в рабочее время: с 10:00 до 17:00 (по МСК).</p>
-                    <div class="about-features">
-                        <div class="about-feature">100% Соблюдение сроков</div>
-                        <div class="about-feature">Работа по договору (НПД)</div>
-                        <div class="about-feature">10:00 – 17:00 (МСК)</div>
-                        <div class="about-feature">Ответ в течение часа в рабочее время</div>
-                    </div>
-                    <a href="#contact" class="btn-primary" style="display:inline-block; margin-top:30px;">Обсудить проект →</a>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="portfolio-item" onclick="openModal('3.jpg','Премиум-реклама для luxury-бренда','Атмосфера богатства и статуса — для ювелирных домов, свадебных агентств, элитных туров')">
+<img src="3.jpg" alt="Яхта">
+<div class="portfolio-overlay"><div class="portfolio-tag">Нейрофото</div><h3>Премиум-реклама для luxury-бренда</h3><p>Атмосфера богатства и статуса — для ювелирных домов, свадебных агентств, элитных туров</p></div>
+</div>
 
-    <section id="contact">
-        <div class="container">
-            <h2 class="section-title">Оформить заявку</h2>
-            <p class="section-subtitle">Заполните форму, и текст заявки скопируется в буфер обмена для отправки в Telegram</p>
-            <form class="contact-form" onsubmit="handleSubmit(event)">
-                <div class="form-group">
-                    <label>Ваше имя *</label>
-                    <input type="text" id="name" required placeholder="Алексей">
-                </div>
-                <div class="form-group">
-                    <label>Телефон / Telegram *</label>
-                    <input type="text" id="contact" required placeholder="+7 (999) 000-00-00 или @username">
-                </div>
-                <div class="form-group">
-                    <label>Тариф</label>
-                    <select id="tariff">
-                        <option>Эконом — 7 000 ₽</option>
-                        <option>Стандарт — 15 000 ₽</option>
-                        <option>Бизнес — 32 000 ₽</option>
-                        <option>Индивидуальный проект</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Описание задачи</label>
-                    <textarea id="description" placeholder="Опишите ваш бизнес, идею или прикрепите пожелания..."></textarea>
-                </div>
-                <button type="submit" class="btn-submit">✈ Отправить заявку</button>
-            </form>
-        </div>
-    </section>
+<div class="portfolio-item" onclick="openModal('4.png','Деловой портрет для эксперта или юриста','Статусный визуал без фотостудии — для личных сайтов, LinkedIn, бизнес-презентаций')">
+<img src="4.png" alt="Костюм">
+<div class="portfolio-overlay"><div class="portfolio-tag">Нейрофото</div><h3>Деловой портрет для эксперта или юриста</h3><p>Статусный визуал без фотостудии — для личных сайтов, LinkedIn, бизнес-презентаций</p></div>
+</div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div>
-                    <div class="footer-logo">
-                        <div class="logo-icon">SA</div>
-                        <div>
-                            <h3>Сергей Афонин</h3>
-                            <p>Премиальный нейровизуал для бизнеса</p>
-                        </div>
-                    </div>
-                    <div class="footer-contacts">
-                        <a href="tel:+79524856187">+7 952 485-61-87</a>
-                        <a href="https://t.me/Serg_ContektPro">@Serg_ContektPro</a>
-                        <a href="mailto:sergey.afonin.57@mail.ru">sergey.afonin.57@mail.ru</a>
-                    </div>
-                    <div class="footer-links">
-                        <a href="https://kwork.ru/user/asv662456" target="_blank">Kwork ↗</a>
-                        <a href="https://www.avito.ru/brands/26a7af646ce433cb09c461da02bed4d3" target="_blank">Авито ↗</a>
-                    </div>
-                </div>
-                <div></div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2026 Сергей Афонин. Все права защищены. | Премиальный нейровизуал и AI-видеопродакшн для бизнеса</p>
-            </div>
-        </div>
-    </footer>
+<div class="portfolio-item" onclick="openModal('5.webp','Имиджевый креатив для мотосалона','Брутальная эстетика для рекламы мотоциклов, автосервисов, мужских брендов')">
+<img src="5.webp" alt="Мотоцикл">
+<div class="portfolio-overlay"><div class="portfolio-tag">Нейрофото</div><h3>Имиджевый креатив для мотосалона</h3><p>Брутальная эстетика для рекламы мотоциклов, автосервисов, мужских брендов</p></div>
+</div>
 
-    <div class="modal" id="portfolioModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <div id="modalMedia"></div>
-            <div class="modal-info">
-                <div class="portfolio-tag" id="modalTag">Нейрофото</div>
-                <h3 id="modalTitle">Заголовок</h3>
-                <p id="modalDescription">Описание</p>
-                <a href="https://t.me/Serg_ContektPro" class="btn-primary" style="display:block; text-align:center;">Заказать похожее →</a>
-            </div>
-        </div>
-    </div>
+<div class="portfolio-item" onclick="openModal('https://www.youtube.com/embed/o5ISOQ1t81Q?autoplay=1&rel=0','Reels для туристической базы отдыха','Оживление фото: вода, брызги, движение — готовый вертикальный ролик для соцсетей',true)">
+<img src="6.jpg" alt="Рыбалка">
+<div class="portfolio-overlay"><div class="portfolio-tag">Нейровидео / Reels</div><h3>Reels для туристической базы отдыха</h3><p>Оживление фото: вода, брызги, движение — готовый вертикальный ролик для соцсетей</p></div>
+</div>
 
-    <script>
-        function openModal(media, title, description, isVideo = false) {
-            const modal = document.getElementById('portfolioModal');
-            const modalMedia = document.getElementById('modalMedia');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDescription = document.getElementById('modalDescription');
-            const modalTag = document.getElementById('modalTag');
-            
-            if (isVideo) {
-                modalMedia.innerHTML = `<iframe class="modal-video" src="${media}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-                modalTag.textContent = 'Нейровидео / Reels';
-            } else {
-                modalMedia.innerHTML = `<img src="${media}" style="width:100%; border-radius:20px 20px 0 0;">`;
-                modalTag.textContent = 'Нейрофото';
-            }
-            
-            modalTitle.textContent = title;
-            modalDescription.textContent = description;
-            modal.classList.add('active');
-        }
-        
-        function closeModal() {
-            const modal = document.getElementById('portfolioModal');
-            modal.classList.remove('active');
-            document.getElementById('modalMedia').innerHTML = '';
-        }
-        
-        function handleSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const contact = document.getElementById('contact').value;
-            const tariff = document.getElementById('tariff').value;
-            const description = document.getElementById('description').value;
-            
-            const message = `Здравствуйте! Меня зовут ${name}.\nКонтакт: ${contact}\nТариф: ${tariff}\nОписание задачи: ${description}`;
-            
-            navigator.clipboard.writeText(message).then(() => {
-                alert('✓ Текст заявки скопирован! Вставьте его в открывшийся чат Telegram 📋');
-                window.open('https://t.me/Serg_ContektPro', '_blank');
-            }).catch(() => {
-                window.open(`https://t.me/Serg_ContektPro?text=${encodeURIComponent(message)}`, '_blank');
-            });
-        }
-        
-        document.getElementById('portfolioModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-    </script>
+</div>
+</div></section>
+
+<section id="audience"><div class="container">
+<h2 class="section-title">Для кого мои услуги</h2>
+<p class="section-subtitle">Создаю визуал, который решает задачи бизнеса в любой нише</p>
+<div class="audience-grid">
+<div class="audience-card"><div class="audience-icon">🏪</div><h3>Малый бизнес</h3><p>Яркие креативы для товаров на маркетплейсах и интернет-магазинов без затрат на студию.</p></div>
+<div class="audience-card"><div class="audience-icon">🎯</div><h3>Эксперты</h3><p>Статусный личный бренд, кинематографичные Reels и сторис для привлечения клиентов.</p></div>
+<div class="audience-card"><div class="audience-icon">✨</div><h3>Салоны красоты</h3><p>Премиальные визуальные образы и эстетика для привлечения аудитории в соцсетях.</p></div>
+<div class="audience-card"><div class="audience-icon">🏍️</div><h3>Автосервисы</h3><p>Брутальные имиджевые ролики и динамичные кадры для рекламы услуг и тюнинга.</p></div>
+<div class="audience-card"><div class="audience-icon">🏡</div><h3>Недвижимость</h3><p>Атмосферные презентации объектов, интерьеров и туристических баз отдыха.</p></div>
+<div class="audience-card"><div class="audience-icon">⚖️</div><h3>Юристы</h3><p>Строгий деловой портрет и экспертный имидж без долгих фотосессий в студии.</p></div>
+</div>
+</div></section>
+
+<section id="process"><div class="container">
+<h2 class="section-title">Как работаем</h2>
+<p class="section-subtitle">Простой и прозрачный процесс создания вашего контента за 4 шага</p>
+<div class="process-steps">
+<div class="step"><div class="step-number">01</div><h3>Обсуждение задачи</h3><p>Вы оставляете заявку, мы обсуждаем вашу цель, референсы и желаемый результат.</p></div>
+<div class="step"><div class="step-number">02</div><h3>Исходные материалы</h3><p>Вы присылаете 1-3 фотографии продукта, модели или интерьера (или выбираем стоковые).</p></div>
+<div class="step"><div class="step-number">03</div><h3>Создание ролика</h3><p>Я генерирую и монтирую кинематографичное нейровидео или фотокомпозицию.</p></div>
+<div class="step"><div class="step-number">04</div><h3>Сдача и правки</h3><p>Утверждаете готовый результат в высоком разрешении 4K UHD. Вносим правки при необходимости.</p></div>
+</div>
+</div></section>
+
+<section id="about"><div class="container">
+<div class="about-content">
+<div class="about-image"><img src="lv-kopia.jpg" alt="Сергей Афонин"></div>
+<div class="about-text">
+<div class="service-badge">ОБО МНЕ</div>
+<h3>Сергей Афонин — специалист по премиальному нейровизуалу</h3>
+<p>Сергей Афонин — специалист по премиальному нейровизуалу. 12 лет в профессиональной фотографии. Работаю по договору (самозанятый). Отвечаю в течение часа в рабочее время: с 10:00 до 17:00 (по МСК).</p>
+<div class="about-features">
+<div class="about-feature">100% Соблюдение сроков</div>
+<div class="about-feature">Работа по договору (НПД)</div>
+<div class="about-feature">10:00 – 17:00 (МСК)</div>
+<div class="about-feature">Ответ в течение часа в рабочее время</div>
+</div>
+<a href="#contact" class="btn-primary" style="display:inline-block;margin-top:30px;">Обсудить проект →</a>
+</div>
+</div>
+</div></section>
+
+<section id="contact"><div class="container">
+<h2 class="section-title">Оформить заявку</h2>
+<p class="section-subtitle">Заполните форму, и текст заявки скопируется в буфер обмена для отправки в Telegram</p>
+<form class="contact-form" onsubmit="handleSubmit(event)">
+<div class="form-group"><label>Ваше имя *</label><input type="text" id="name" required placeholder="Алексей"></div>
+<div class="form-group"><label>Телефон / Telegram *</label><input type="text" id="contact" required placeholder="+7 (999) 000-00-00 или @username"></div>
+<div class="form-group"><label>Тариф</label><select id="tariff"><option>Эконом — 7 000 ₽</option><option>Стандарт — 15 000 ₽</option><option>Бизнес — 32 000 ₽</option><option>Индивидуальный проект</option></select></div>
+<div class="form-group"><label>Описание задачи</label><textarea id="description" placeholder="Опишите ваш бизнес, идею или прикрепите пожелания..."></textarea></div>
+<button type="submit" class="btn-submit">✈ Отправить заявку</button>
+</form>
+</div></section>
+
+<footer><div class="container">
+<div class="footer-content">
+<div>
+<div class="footer-logo"><div class="logo-icon">SA</div><div><h3>Сергей Афонин</h3><p>Премиальный нейровизуал для бизнеса</p></div></div>
+<div class="footer-contacts">
+<a href="tel:+79524856187">+7 952 485-61-87</a>
+<a href="https://t.me/Serg_ContektPro">@Serg_ContektPro</a>
+<a href="mailto:sergey.afonin.57@mail.ru">sergey.afonin.57@mail.ru</a>
+</div>
+<div class="footer-links">
+<a href="https://kwork.ru/user/asv662456" target="_blank">Kwork ↗</a>
+<a href="https://www.avito.ru/brands/26a7af646ce433cb09c461da02bed4d3" target="_blank">Авито ↗</a>
+</div>
+</div>
+<div></div>
+</div>
+<div class="footer-bottom"><p>© 2026 Сергей Афонин. Все права защищены. | Премиальный нейровизуал и AI-видеопродакшн для бизнеса</p></div>
+</div></footer>
+
+<div class="modal" id="portfolioModal"><div class="modal-content">
+<button class="modal-close" onclick="closeModal()">✕</button>
+<div id="modalMedia"></div>
+<div class="modal-info">
+<div class="portfolio-tag" id="modalTag">Нейрофото</div>
+<h3 id="modalTitle">Заголовок</h3>
+<p id="modalDescription">Описание</p>
+<a href="https://t.me/Serg_ContektPro" class="btn-primary" style="display:block;text-align:center;">Заказать похожее →</a>
+</div>
+</div></div>
+
+<script>
+function openModal(media,title,description,isVideo){const modal=document.getElementById('portfolioModal');const modalMedia=document.getElementById('modalMedia');const modalTitle=document.getElementById('modalTitle');const modalDescription=document.getElementById('modalDescription');const modalTag=document.getElementById('modalTag');if(isVideo){modalMedia.innerHTML='<iframe class="modal-video" src="'+media+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';modalTag.textContent='Нейровидео / Reels';}else{modalMedia.innerHTML='<img src="'+media+'" style="width:100%;border-radius:20px 20px 0 0;">';modalTag.textContent='Нейрофото';}modalTitle.textContent=title;modalDescription.textContent=description;modal.classList.add('active');}
+function closeModal(){const modal=document.getElementById('portfolioModal');modal.classList.remove('active');document.getElementById('modalMedia').innerHTML='';}
+function handleSubmit(e){e.preventDefault();const name=document.getElementById('name').value;const contact=document.getElementById('contact').value;const tariff=document.getElementById('tariff').value;const description=document.getElementById('description').value;const message='Здравствуйте! Меня зовут '+name+'.\nКонтакт: '+contact+'\nТариф: '+tariff+'\nОписание задачи: '+description;navigator.clipboard.writeText(message).then(()=>{alert('✓ Текст заявки скопирован! Вставьте его в открывшийся чат Telegram 📋');window.open('https://t.me/Serg_ContektPro','_blank');}).catch(()=>{window.open('https://t.me/Serg_ContektPro?text='+encodeURIComponent(message),'_blank');});}
+document.getElementById('portfolioModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+</script>
 </body>
 </html>
