@@ -103,7 +103,7 @@ footer{background:rgba(0,0,0,0.5);padding:60px 0 30px;border-top:1px solid rgba(
 .modal.active{display:flex}
 .modal-content{background:#1a1a1a;border-radius:20px;max-width:800px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
 .modal-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.1);border:none;color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:20px;z-index:10}
-.modal-video{width:100%;aspect-ratio:16/9;border-radius:20px 20px 0 0}
+.modal-video{width:100%;aspect-ratio:9/16;max-height:70vh;border-radius:20px 20px 0 0;background:#000}
 .modal-info{padding:30px}
 .modal-info h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;margin-bottom:15px}
 .modal-info p{color:#a0a0a0;margin-bottom:25px}
@@ -197,7 +197,7 @@ footer{background:rgba(0,0,0,0.5);padding:60px 0 30px;border-top:1px solid rgba(
 <div class="portfolio-overlay"><div class="portfolio-tag">Нейрофото</div><h3>Имиджевый креатив для мотосалона</h3><p>Брутальная эстетика для рекламы мотоциклов, автосервисов, мужских брендов</p></div>
 </div>
 
-<div class="portfolio-item" onclick="openModal('https://www.youtube.com/embed/o5ISOQ1t81Q?autoplay=1&rel=0','Reels для туристической базы отдыха','Оживление фото: вода, брызги, движение — готовый вертикальный ролик для соцсетей',true)">
+<div class="portfolio-item" onclick="openModal('rybalka.mp4','Reels для туристической базы отдыха','Оживление фото: вода, брызги, движение — готовый вертикальный ролик для соцсетей','video')">
 <img src="6.jpg" alt="Рыбалка">
 <div class="portfolio-overlay"><div class="portfolio-tag">Нейровидео / Reels</div><h3>Reels для туристической базы отдыха</h3><p>Оживление фото: вода, брызги, движение — готовый вертикальный ролик для соцсетей</p></div>
 </div>
@@ -290,9 +290,42 @@ footer{background:rgba(0,0,0,0.5);padding:60px 0 30px;border-top:1px solid rgba(
 </div></div>
 
 <script>
-function openModal(media,title,description,isVideo){const modal=document.getElementById('portfolioModal');const modalMedia=document.getElementById('modalMedia');const modalTitle=document.getElementById('modalTitle');const modalDescription=document.getElementById('modalDescription');const modalTag=document.getElementById('modalTag');if(isVideo){modalMedia.innerHTML='<iframe class="modal-video" src="'+media+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';modalTag.textContent='Нейровидео / Reels';}else{modalMedia.innerHTML='<img src="'+media+'" style="width:100%;border-radius:20px 20px 0 0;">';modalTag.textContent='Нейрофото';}modalTitle.textContent=title;modalDescription.textContent=description;modal.classList.add('active');}
-function closeModal(){const modal=document.getElementById('portfolioModal');modal.classList.remove('active');document.getElementById('modalMedia').innerHTML='';}
-function handleSubmit(e){e.preventDefault();const name=document.getElementById('name').value;const contact=document.getElementById('contact').value;const tariff=document.getElementById('tariff').value;const description=document.getElementById('description').value;const message='Здравствуйте! Меня зовут '+name+'.\nКонтакт: '+contact+'\nТариф: '+tariff+'\nОписание задачи: '+description;navigator.clipboard.writeText(message).then(()=>{alert('✓ Текст заявки скопирован! Вставьте его в открывшийся чат Telegram 📋');window.open('https://t.me/Serg_ContektPro','_blank');}).catch(()=>{window.open('https://t.me/Serg_ContektPro?text='+encodeURIComponent(message),'_blank');});}
+function openModal(media,title,description,type){
+const modal=document.getElementById('portfolioModal');
+const modalMedia=document.getElementById('modalMedia');
+const modalTitle=document.getElementById('modalTitle');
+const modalDescription=document.getElementById('modalDescription');
+const modalTag=document.getElementById('modalTag');
+if(type==='video'){
+modalMedia.innerHTML='<video class="modal-video" controls autoplay playsinline><source src="'+media+'" type="video/mp4"></video>';
+modalTag.textContent='Нейровидео / Reels';
+}else{
+modalMedia.innerHTML='<img src="'+media+'" style="width:100%;border-radius:20px 20px 0 0;">';
+modalTag.textContent='Нейрофото';
+}
+modalTitle.textContent=title;
+modalDescription.textContent=description;
+modal.classList.add('active');
+}
+function closeModal(){
+const modal=document.getElementById('portfolioModal');
+modal.classList.remove('active');
+document.getElementById('modalMedia').innerHTML='';
+}
+function handleSubmit(e){
+e.preventDefault();
+const name=document.getElementById('name').value;
+const contact=document.getElementById('contact').value;
+const tariff=document.getElementById('tariff').value;
+const description=document.getElementById('description').value;
+const message='Здравствуйте! Меня зовут '+name+'.\nКонтакт: '+contact+'\nТариф: '+tariff+'\nОписание задачи: '+description;
+navigator.clipboard.writeText(message).then(()=>{
+alert('✓ Текст заявки скопирован! Вставьте его в открывшийся чат Telegram 📋');
+window.open('https://t.me/Serg_ContektPro','_blank');
+}).catch(()=>{
+window.open('https://t.me/Serg_ContektPro?text='+encodeURIComponent(message),'_blank');
+});
+}
 document.getElementById('portfolioModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 </script>
 </body>
